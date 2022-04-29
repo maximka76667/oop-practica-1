@@ -62,5 +62,5 @@ public class Moneda {
 		return "Moneda [tipoMoneda=" + tipoMoneda + ", decimales=" + decimales + ", simbolo=" + simbolo
 				+ ", cambioEuro=" + cambioEuro + "]";
 	}
-	
+
 }
