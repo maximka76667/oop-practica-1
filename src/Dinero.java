@@ -1,14 +1,33 @@
 import java.util.ArrayList;
 
 public class Dinero {
-	static ArrayList<Moneda> dinero;
+	static ArrayList<Moneda> monedas;
 
 	static {
-		dinero = new ArrayList<Moneda>();
+		monedas = new ArrayList<Moneda>();
 		addMoneda(TipoMoneda.EURO, 2, "€", 1);
 		addMoneda(TipoMoneda.DOLAR, 2, "$", 1.08);
 		addMoneda(TipoMoneda.RUBLO, 2, "R", 85.27);
 		addMoneda(TipoMoneda.TENGE, 2, "T", 483.19);
+	}
+
+	private static int indexOfMoneda(TipoMoneda tipo) {
+		for (int i = 0; i < monedas.size(); i++) {
+			if (monedas.get(i).getTipoMoneda() == tipo) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	// Busca moneda por nombre y devuelve moneda o null
+	private static Moneda buscarMoneda(TipoMoneda tipoMonedaParaBuscar) {
+		int indexOfMoneda = indexOfMoneda(tipoMonedaParaBuscar);
+		if (indexOfMoneda > -1) {
+			return monedas.get(indexOfMoneda);
+		}
+		return null;
+
 	}
 
 	private static Moneda createMoneda(TipoMoneda tipo, int decimales, String simbolo, double cambioEuro) {
@@ -22,24 +41,21 @@ public class Dinero {
 
 	private static void addMoneda(TipoMoneda tipo, int decimales, String simbolo, double cambioEuro) {
 		// Check if unique
-		for (int i = 0; i < dinero.size(); i++) {
-			if (dinero.get(i).getTipoMoneda() == tipo) {
-				dinero.set(i, createMoneda(tipo, decimales, simbolo, cambioEuro));
-				return;
-			}
+		int indexDeMoneda = indexOfMoneda(tipo);
+		if (indexOfMoneda(tipo) > -1) {
+			monedas.set(indexDeMoneda, createMoneda(tipo, decimales, simbolo, cambioEuro));
+			return;
 		}
-		dinero.add(createMoneda(tipo, decimales, simbolo, cambioEuro));
+		monedas.add(createMoneda(tipo, decimales, simbolo, cambioEuro));
 	}
 
 	public static void actualizarMoneda(TipoMoneda tipo, double cambioEuroNuevo) {
-		for (int i = 0; i < dinero.size(); i++) {
-			if (dinero.get(i).getTipoMoneda() == tipo) {
-				try {
-					dinero.get(i).setCambioEuro(cambioEuroNuevo);
-					break;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		Moneda moneda = buscarMoneda(tipo);
+		if (moneda != null) {
+			try {
+				moneda.setCambioEuro(cambioEuroNuevo);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -78,16 +94,6 @@ public class Dinero {
 	public void setTipoMoneda(TipoMoneda tipoMoneda) {
 		this.tipoMoneda = tipoMoneda;
 		this.moneda = buscarMoneda(tipoMoneda);
-	}
-
-	// Busca moneda por nombre y devuelve moneda o null
-	private Moneda buscarMoneda(TipoMoneda tipoMonedaParaBuscar) {
-		for (Moneda moneda : dinero) {
-			if (moneda.getTipoMoneda().equals(tipoMonedaParaBuscar)) {
-				return moneda;
-			}
-		}
-		return null;
 	}
 
 	private float aplicarDecimales(float cantidad, int decimales) {
