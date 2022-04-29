@@ -97,7 +97,8 @@ public class Dinero {
 	}
 
 	private float aplicarDecimales(float cantidad, int decimales) {
-		return (float) (Math.round(cantidad * Math.pow(10, decimales)) / Math.pow(10, decimales));
+		double multiplicador = Math.pow(10, decimales);
+		return (float) (Math.round(cantidad * multiplicador) / multiplicador);
 	}
 
 	private String buscarSimbolo(Moneda moneda) {
