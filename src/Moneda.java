@@ -14,7 +14,7 @@ public class Moneda {
 
 	public Moneda(TipoMoneda tipoMoneda, int decimales, String simbolo, double cambioEuro) throws Exception {
 		this.tipoMoneda = tipoMoneda;
-		setDecimales(decimales);
+		this.decimales = decimales;
 		this.simbolo = simbolo;
 		setCambioEuro(cambioEuro);
 	}
@@ -23,28 +23,12 @@ public class Moneda {
 		return tipoMoneda;
 	}
 
-	public void setTipoMoneda(TipoMoneda tipoMoneda) {
-		this.tipoMoneda = tipoMoneda;
-	}
-
 	public int getDecimales() {
 		return decimales;
 	}
 
-	public void setDecimales(int decimales) throws Exception {
-		if (decimales < 0 || decimales > 4)
-			throw new Exception("Decimales deben estar entre 0 y 4");
-		this.decimales = decimales;
-	}
-
 	public String getSimbolo() {
 		return simbolo;
-	}
-
-	public void setSimbolo(String simbolo) throws Exception {
-		if (simbolo == null || simbolo.equals(""))
-			throw new Exception("Simbolo vacío");
-		this.simbolo = simbolo;
 	}
 
 	public double getCambioEuro() {
